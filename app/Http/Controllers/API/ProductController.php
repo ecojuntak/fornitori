@@ -5,38 +5,34 @@ namespace App\Http\Controllers\API;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ImageUtility;
+use Illuminate\Support\Facades\Config;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use ImageUtility;
+
     public function index() {
-        return Product::all();
+        return response()->json(Product::all());
     }
 
-    public function store(Request $request)
-    {
-        $uploadedImages = $request->file('images');
-        $imageNames = [];
+    public function getProduct($id) {
+        return response()->json(Product::find($id));
+    }
 
-        foreach ($uploadedImages as $image) {
-            $imageName = time() . $image->getClientOriginalName();
+    public function getProductsByMerchant($id) {
+        return response()->json(Product::where('user_id', $id)->get());
+    }
 
-            array_push($imageNames, $imageName);
-
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $imageName);
-        }
+    public function storeProduct(Request $request, $merchantId) {
+        $imageNames = $request->file('images') !== null ?
+            $this->storeImages($request->file('images')) : [];
 
         $product = new Product();
-        $product->user_id = Auth::user()->id;
+        $product->user_id = $merchantId;
         $product->name = $request->name;
         $product->price = $request->price;
         $product->stock = $request->stock;
-        $product->sold = 0;
         $product->category = $request->category;
         $product->specification = json_encode([
             'dimention' => $request->dimention,
@@ -45,20 +41,49 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->color = $request->color;
         $product->images = json_encode($imageNames);
-        $success=$product->save();
+        $product->save();
 
-        if(!$success){
-            return Response::json("error solving", 500);
-        }
-            return Respnse::json("success", 201);
+        return response()->json([
+            'status' => Config::get('messages.PRODUCT_CREATED_MESSAGE')
+        ], Config::get('messages.SUCCESS_CODE'));
     }
-    public function getProducts($id) {
-        return response()->json(Product::where('user_id', $id)->get());
+
+    public function updateProduct(Request $request, $id) {
+        $product = Product::find($id);
+        $imageNames = $request->file('images') !== null ?
+            json_encode($this->storeImages($request->file('images'))) : $product->images;
+
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->category = $request->category;
+        $product->specification = json_encode([
+            'dimention' => $request->dimention,
+            'weight' => $request->weight
+        ]);
+        $product->description = $request->description;
+        $product->color = $request->color;
+        $product->images = $imageNames;
+        $product->save();
+
+        return response()->json([
+            'status' => Config::get('messages.PRODUCT_CREATED_MESSAGE')
+        ], Config::get('messages.SUCCESS_CODE'));
     }
 
     public function searchProduct(Request $request) {
-        $products = Product::with('merchant.profile')->where('name', 'LIKE', '%'. $request->keyword .'%')->get();
+        $products = Product::with('merchant.profile')
+                           ->where('name', 'LIKE', '%'. $request->keyword .'%')
+                           ->get();
+
         return response()->json($products);
+    }
+
+    public function deleteProduct($id) {
+        Product::find($id)->delete();
+
+        return response()->json([
+            'status' => Config::get('messages.PRODUCT_DELETED_STATUS')
+        ], Config::get('messages.SUCCESS_CODE'));
     }
 
 }

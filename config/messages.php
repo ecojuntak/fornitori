@@ -12,5 +12,8 @@ return [
     "EMAIL_VERIFIED" => "Your email verified",
 
     "SUCCESS_CODE" => 200,
-    "UNAUTHORIZED_CODE" => 401
+    "UNAUTHORIZED_CODE" => 401,
+
+    "PRODUCT_CREATED_MESSAGE" => "Product created",
+    "PRODUCT_DELETED_STATUS" => "Product deleted"
 ];
