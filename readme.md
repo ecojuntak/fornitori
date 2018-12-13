@@ -18,4 +18,3 @@
 
 ## Run
 - Run `php artisan serve` to start the PHP server
-- Run `npm run watch` to start the Node JS server to compile the Vue JS components
