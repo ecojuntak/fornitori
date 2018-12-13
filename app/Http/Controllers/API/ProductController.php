@@ -16,7 +16,11 @@ class ProductController extends Controller
         return response()->json(Product::all());
     }
 
-    public function getProducts($id) {
+    public function getProduct($id) {
+        return response()->json(Product::find($id));
+    }
+
+    public function getProductsByMerchant($id) {
         return response()->json(Product::where('user_id', $id)->get());
     }
 
@@ -72,6 +76,14 @@ class ProductController extends Controller
                            ->get();
 
         return response()->json($products);
+    }
+
+    public function deleteProduct($id) {
+        Product::find($id)->delete();
+
+        return response()->json([
+            'status' => Config::get('messages.PRODUCT_DELETED_STATUS')
+        ], Config::get('messages.SUCCESS_CODE'));
     }
 
 }

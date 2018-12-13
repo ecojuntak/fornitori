@@ -14,5 +14,6 @@ return [
     "SUCCESS_CODE" => 200,
     "UNAUTHORIZED_CODE" => 401,
 
-    "PRODUCT_CREATED_MESSAGE" => "Product created"
+    "PRODUCT_CREATED_MESSAGE" => "Product created",
+    "PRODUCT_DELETED_STATUS" => "Product deleted"
 ];
