@@ -30,5 +30,27 @@ class UserTableSeeder extends Seeder
             'gender' => Config::get('messages.GENDER_MALE'),
             'birthday' => Carbon::now(),
         ]);
+
+        $merchant = User::create([
+            "username" => "merchant",
+            "email" => "merchant@uloszone.com",
+            "password" => bcrypt("merchant123"),
+            "role" => "merchant",
+            "email_verified_at" => Carbon::now(),
+            "status" => Config::get('messages.VERIFIED_STATUS')
+        ]);
+
+        for ($i=0; $i<5; $i++) {
+            $merchant->products()->create([
+                'name' => 'Ulos Ragi Hotang',
+                'price' => '100000',
+                'stock' => '5',
+                'description' => 'Ulosnya bagus',
+                'category' => 'ATBM',
+                'specification' => '{"dimention":"2m x 90cm","weight":"1"}',
+                'images' => '["no-image.png"]',
+                'color' => 'black',
+            ]);
+        }
     }
 }

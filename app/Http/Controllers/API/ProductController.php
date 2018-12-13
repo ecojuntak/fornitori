@@ -14,7 +14,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return Product::all();
+        return response()->json(Product::all());
     }
 
     public function getProducts($id) {
@@ -22,7 +22,10 @@ class ProductController extends Controller
     }
 
     public function searchProduct(Request $request) {
-        $products = Product::with('merchant.profile')->where('name', 'LIKE', '%'. $request->keyword .'%')->get();
+        $products = Product::with('merchant.profile')
+                           ->where('name', 'LIKE', '%'. $request->keyword .'%')
+                           ->get();
+
         return response()->json($products);
     }
 
