@@ -13,7 +13,7 @@ class ProductController extends Controller
     use ImageUtility;
 
     public function index() {
-        return response()->json(Product::all());
+        return response()->json(Product::all()->orderByDesc('created_at'));
     }
 
     public function getProduct($id) {
@@ -21,7 +21,7 @@ class ProductController extends Controller
     }
 
     public function getProductsByMerchant($id) {
-        return response()->json(Product::where('user_id', $id)->get());
+        return response()->json(Product::where('user_id', $id)->orderByDesc('created_at')->get());
     }
 
     public function storeProduct(Request $request, $merchantId) {
@@ -73,6 +73,7 @@ class ProductController extends Controller
     public function searchProduct(Request $request) {
         $products = Product::with('merchant.profile')
                            ->where('name', 'LIKE', '%'. $request->keyword .'%')
+                           ->orderByDesc('created_at')
                            ->get();
 
         return response()->json($products);

@@ -14,23 +14,35 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $admin = User::create([
-            "username" => "admin",
-            "email" => "uloszone@gmail.com",
-            "password" => bcrypt("admin123"),
-            "role" => "admin",
+        $this->createAdmin();
+        $this->createMerchant();
+        $this->createCustomer();
+    }
+
+    private function createCustomer() {
+        $customer = User::create([
+            "username" => "customer",
+            "email" => "customer@uloszone.com",
+            "password" => bcrypt("customer123"),
+            "role" => "customer",
             "email_verified_at" => Carbon::now(),
             "status" => Config::get('messages.VERIFIED_STATUS')
         ]);
 
-        $admin->profile()->create([
-            'name' => 'Admin Uloszone',
-            'address' => '["{\"name\":null,\"province_id\":34,\"city_id\":481,\"subdistrict_id\":\"6657\",\"province_name\":\"Sumatera Utara\",\"city_name\":\"Toba Samosir\",\"subdistrict_name\":\"Laguboti\",\"postal_code\":\"22316\",\"detail\":\"Simpang Empat Laguboti\"}"]',
-            'phone' => '+628230448xxxx',
-            'gender' => Config::get('messages.GENDER_MALE'),
-            'birthday' => Carbon::now(),
-        ]);
+        $customer->cart()->create();
 
+        for($i=1; $i<=3; $i++) {
+            $customer->cart->products()->attach([
+                $i => [
+                    'quantity' => 1,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]
+            ]);
+        }
+    }
+
+    private function createMerchant() {
         $merchant = User::create([
             "username" => "merchant",
             "email" => "merchant@uloszone.com",
@@ -52,5 +64,24 @@ class UserTableSeeder extends Seeder
                 'color' => 'black',
             ]);
         }
+    }
+
+    private function createAdmin() {
+        $admin = User::create([
+            "username" => "admin",
+            "email" => "uloszone@gmail.com",
+            "password" => bcrypt("admin123"),
+            "role" => "admin",
+            "email_verified_at" => Carbon::now(),
+            "status" => Config::get('messages.VERIFIED_STATUS')
+        ]);
+
+        $admin->profile()->create([
+            'name' => 'Admin Uloszone',
+            'address' => '["{\"name\":null,\"province_id\":34,\"city_id\":481,\"subdistrict_id\":\"6657\",\"province_name\":\"Sumatera Utara\",\"city_name\":\"Toba Samosir\",\"subdistrict_name\":\"Laguboti\",\"postal_code\":\"22316\",\"detail\":\"Simpang Empat Laguboti\"}"]',
+            'phone' => '+628230448xxxx',
+            'gender' => Config::get('messages.GENDER_MALE'),
+            'birthday' => Carbon::now(),
+        ]);
     }
 }

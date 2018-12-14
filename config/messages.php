@@ -21,4 +21,9 @@ return [
     "BANNER_DELETED_STATUS" => "Banner deleted",
     "CAROUSEL_CREATED_MESSAGE" => "Carousel created",
     "CAROUSEL_CREATED_STATUS" => "Carousel deleted",
+
+    "CART_CREATED_MESSAGE" => "Cart created",
+    "CART_UPDATED_MESSAGE" => "Cart updated",
+
+    "NEW_ORDER_STATUS" => "New order"
 ];

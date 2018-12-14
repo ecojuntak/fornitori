@@ -13,6 +13,10 @@ class Product extends Model
         return $this->belongsTo('App\User', 'user_id');
     }
 
+    public function carts() {
+        return $this->belongsToMany('App\Cart');
+    }
+
     public function reviews() {
         return $this->hasMany('App\ProductReview');
     }
