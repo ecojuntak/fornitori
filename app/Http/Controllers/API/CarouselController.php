@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Carousel;
+use Illuminate\Support\Facades\Config;
 
 class CarouselController extends Controller
 {
@@ -12,35 +13,34 @@ class CarouselController extends Controller
         return response()->json(Carousel::all());
     }
 
-    public function store(Request $request)
+    public function storeCarousel(Request $request)
     {
-        $image = $request->file('image');
-        $imageName = time() . $image->getClientOriginalName();
-        $destinationPath = public_path('/images/carousels');
-        $image->move($destinationPath, $imageName);
-
+        $imageNames = $request->file('images') !== null ?
+            $this->storeImages($request->file('images')) : [];
         $carousel = new Carousel();
         $carousel->link = $request->link;
         $carousel->description = $request->description;
-        $carousel->image = $imageName;
+        $carousel->image = json_encode($imageNames);
         $carousel->status = 'nonactive';
         $carousel->save();
 
-        return redirect('/carousels');
+        return response()->json([
+            'status' => Config::get('messages.CAROUSEL_CREATED_MESSAGE')
+        ], Config::get('messages.SUCCESS_CODE'));
     }
 
-    public function update(Request $request, $id)
+    public function updateCarousel(Request $request, $id)
     {
-
         $carousel = Carousel::find($id);
         $imageNames = $request->file('images') !== null ?
             $this->storeImages($request->file('images')) : [];
         $carousel->link = $request->link;
         $carousel->description = $request->description;
+        $carousel->image = json_encode($imageNames);
         $carousel->save();
 
         return response()->json([
-            'status' => Config::get('messages.BANNER_CREATED_STATUS')
+            'status' => Config::get('messages.CAROUSEL_CREATED_MESSAGE')
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
@@ -49,7 +49,7 @@ class CarouselController extends Controller
         Carousel::find($id)->delete();
 
         return response()->json([
-            'status' => Config::get('messages.BANNER_DELETED_STATUS')
+            'status' => Config::get('messages.CAROUSEL_DELETED_STATUS')
         ], Config::get('messages.SUCCESS_CODE'));
     }
 

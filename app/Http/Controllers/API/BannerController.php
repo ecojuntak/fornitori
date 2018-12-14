@@ -11,17 +11,22 @@ use Illuminate\Support\Facades\Config;
 class BannerController extends Controller
 {
     use ImageUtility;
-       
-    public function getBanners() {
-        return response()->json(Banner::all());
-    }
-
-    public function storeBanner(Request $request) {
+    
+    private function validate(Request $request)
+    {
         $request->validate([
             'title' => 'required',
             'description' => 'required',
             'link' => 'required',
         ]);
+    }
+
+    public function getBanners() {
+        return response()->json(Banner::all());
+    }
+
+    public function storeBanner(Request $request) {
+        $banner->validate($request);
 
         $imageNames = $request->file('image') !== null ?
             $this->storeImages($request->file('image')) : [];
@@ -38,12 +43,7 @@ class BannerController extends Controller
     }
 
     public function updateBanner(Request $request, $id) {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'link' => 'required',
-        ]);
-
+        $banner->validate($request);
         $banner = Banner::find($id);
         $imageNames = $request->file('images') !== null ?
             $this->storeImages($request->file('images')) : [];

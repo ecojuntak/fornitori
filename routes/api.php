@@ -27,9 +27,9 @@ Route::group(['middleware' => 'jwt.auth'], function(){
         Route::post('banners/create', 'API\BannerController@storeBanner');
         Route::post('banners/{id}/update', 'API\BannerController@updateBanner');
         Route::post('banners/{id}/delete', 'API\BannerController@deleteBanner');
-        Route::post('carousels/create', 'API\CarouselController@storeCarousels');
-        Route::post('carousels/{id}/update', 'API\CarouselController@updateCarousels');
-        Route::post('carousels/{id}/delete', 'API\CarouselController@deleteCarousels');
+        Route::post('carousels/create', 'API\CarouselController@storeCarousel');
+        Route::post('carousels/{id}/update', 'API\CarouselController@updateCarousel');
+        Route::post('carousels/{id}/delete', 'API\CarouselController@deleteCarousel');
     });
 
     Route::group(['prefix' => 'merchant'], function () {

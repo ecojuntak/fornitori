@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Banner;
+use App\Carousel;
 
-class BannerTableSeeder extends Seeder
+class CarouselTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,11 +12,11 @@ class BannerTableSeeder extends Seeder
      */
     public function run()
     {
-        Banner::create([
-            'title' => 'Blabla',
+        Carousel::create([
             'description' => 'blablabla',
             'link' => 'blabla.com',
             'image' => 'no-image.png',
+            'status' => 'blabla',
         ]);
     }
 }
