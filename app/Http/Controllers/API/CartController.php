@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Cart;
@@ -10,7 +11,10 @@ use Illuminate\Support\Facades\Config;
 class CartController extends Controller
 {
     public function getProductInCartByCustomer($id) {
-        return response()->json(Cart::where('user_id', $id)->orderByDesc('created_at')->get());
+        return response()->json([
+            "carts" => Cart::where('user_id', $id)->orderByDesc('created_at')->get(),
+            "user" => User::find($id)
+        ], Config::get('messages.SUCCESS_CODE'));
     }
 
     public function insertProductToCart(Request $request, $id) {
