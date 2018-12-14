@@ -19,4 +19,6 @@ return [
 
     "CART_CREATED_MESSAGE" => "Cart created",
     "CART_UPDATED_MESSAGE" => "Cart updated",
+
+    "NEW_ORDER_STATUS" => "New order"
 ];

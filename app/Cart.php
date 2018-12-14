@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
     protected $fillable = [
-        'product_id', 'quantity', 'user_id'
+        'product_id', 'user_id'
     ];
 
     protected $dates = ['deleted_at'];
 
-    public function product() {
-        return $this->belongsTo('App\Product');
+    public function products() {
+        return $this->belongsToMany('App\Product', 'cart_details', 'cart_id', 'product_id');
     }
 
     public function customer() {

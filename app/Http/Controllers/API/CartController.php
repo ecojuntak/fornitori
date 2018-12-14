@@ -12,7 +12,7 @@ class CartController extends Controller
 {
     public function getProductInCartByCustomer($id) {
         return response()->json([
-            "carts" => Cart::where('user_id', $id)->orderByDesc('created_at')->get(),
+            "cart" => Cart::with('products')->where('user_id', $id)->orderByDesc('created_at')->first(),
             "user" => User::find($id)
         ], Config::get('messages.SUCCESS_CODE'));
     }
