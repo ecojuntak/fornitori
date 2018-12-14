@@ -23,10 +23,13 @@ Route::group(['middleware' => 'jwt.auth'], function(){
     Route::group(['prefix' => 'admin'], function () {
         Route::get('orders/status/{status}', 'API\TransactionController@getOrders');
         Route::get('banners', 'API\BannerController@getBanners');
+        Route::get('carousels', 'API\CarouselController@getCarousels');
         Route::post('banners/create', 'API\BannerController@storeBanner');
         Route::post('banners/{id}/update', 'API\BannerController@updateBanner');
         Route::post('banners/{id}/delete', 'API\BannerController@deleteBanner');
-        
+        Route::post('carousels/create', 'API\CarouselController@storeCarousels');
+        Route::post('carousels/{id}/update', 'API\CarouselController@updateCarousels');
+        Route::post('carousels/{id}/delete', 'API\CarouselController@deleteCarousels');
     });
 
     Route::group(['prefix' => 'merchant'], function () {

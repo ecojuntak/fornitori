@@ -19,4 +19,6 @@ return [
     "NEW_ORDER_MESSAGE" => "List New Order",
     "BANNER_CREATED_MESSAGE" => "Banner created",
     "BANNER_DELETED_STATUS" => "Banner deleted",
+    "CAROUSEL_CREATED_MESSAGE" => "Carousel created",
+    "CAROUSEL_CREATED_STATUS" => "Carousel deleted",
 ];
