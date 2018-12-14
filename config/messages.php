@@ -15,5 +15,8 @@ return [
     "UNAUTHORIZED_CODE" => 401,
 
     "PRODUCT_CREATED_MESSAGE" => "Product created",
-    "PRODUCT_DELETED_STATUS" => "Product deleted"
+    "PRODUCT_DELETED_STATUS" => "Product deleted",
+    "NEW_ORDER_MESSAGE" => "List New Order",
+    "BANNER_CREATED_MESSAGE" => "Banner created",
+    "BANNER_DELETED_STATUS" => "Banner deleted",
 ];

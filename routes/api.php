@@ -20,15 +20,23 @@ Route::get('/products/search', 'API\ProductController@searchProduct');
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::post('auth/logout', 'API\AuthController@logout');
 
+    Route::group(['prefix' => 'admin'], function () {
+        Route::get('orders/status/{status}', 'API\TransactionController@getOrders');
+        Route::get('banners', 'API\BannerController@getBanners');
+        Route::post('banners/create', 'API\BannerController@storeBanner');
+        Route::post('banners/{id}/update', 'API\BannerController@updateBanner');
+        Route::post('banners/{id}/delete', 'API\BannerController@deleteBanner');
+        
+    });
+
     Route::group(['prefix' => 'merchant'], function () {
         Route::get('{id}/products', 'API\ProductController@getProductsByMerchant');
         Route::post('{merchantId}/products/create', 'API\ProductController@storeProduct');
         Route::post('products/{id}/update', 'API\ProductController@updateProduct');
         Route::post('products/{id}/delete', 'API\ProductController@deleteProduct');
     });
-
+    
     Route::get('products/{id}', 'API\ProductController@getProduct');
-
     Route::get('user', 'API\UserController@user');
 });
 
