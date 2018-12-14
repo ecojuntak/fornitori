@@ -52,5 +52,21 @@ class UserTableSeeder extends Seeder
                 'color' => 'black',
             ]);
         }
+
+        $customer = User::create([
+            "username" => "customer",
+            "email" => "customer@uloszone.com",
+            "password" => bcrypt("customer123"),
+            "role" => "customer",
+            "email_verified_at" => Carbon::now(),
+            "status" => Config::get('messages.VERIFIED_STATUS')
+        ]);
+
+        for($i=0; $i<3; $i++) {
+            $customer->carts()->create([
+                'quantity' => 1,
+                'product_id' => 1
+            ]);
+        }
     }
 }

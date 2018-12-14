@@ -27,6 +27,10 @@ Route::group(['middleware' => 'jwt.auth'], function(){
         Route::post('products/{id}/delete', 'API\ProductController@deleteProduct');
     });
 
+    Route::group(['prefix' => 'customer'], function () {
+        Route::get('{id}/carts', 'API\CartController@getProductInCartByCustomer');
+    });
+
     Route::get('products/{id}', 'API\ProductController@getProduct');
 
     Route::get('user', 'API\UserController@user');
