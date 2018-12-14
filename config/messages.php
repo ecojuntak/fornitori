@@ -15,5 +15,8 @@ return [
     "UNAUTHORIZED_CODE" => 401,
 
     "PRODUCT_CREATED_MESSAGE" => "Product created",
-    "PRODUCT_DELETED_STATUS" => "Product deleted"
+    "PRODUCT_DELETED_STATUS" => "Product deleted",
+
+    "CART_CREATED_MESSAGE" => "Cart created",
+    "CART_UPDATED_MESSAGE" => "Cart updated",
 ];
