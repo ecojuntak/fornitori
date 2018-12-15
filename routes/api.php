@@ -16,6 +16,7 @@ Route::post('auth/register', 'API\RegistrationController@register');
 Route::get('email/verify/{token}', 'Auth\VerificationController@verifyEmail')->name('email.verify');
 
 Route::get('/products/search', 'API\ProductController@searchProduct');
+Route::get('carousels', 'API\CarouselController@getCarousels');
 
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::post('auth/logout', 'API\AuthController@logout');
@@ -23,7 +24,6 @@ Route::group(['middleware' => 'jwt.auth'], function(){
     Route::group(['prefix' => 'admin'], function () {
         Route::get('orders/status/{status}', 'API\TransactionController@getOrders');
         Route::get('banners', 'API\BannerController@getBanners');
-        Route::get('carousels', 'API\CarouselController@getCarousels');
         Route::post('banners/create', 'API\BannerController@storeBanner');
         Route::post('banners/{id}/update', 'API\BannerController@updateBanner');
         Route::post('banners/{id}/delete', 'API\BannerController@deleteBanner');
