@@ -17,10 +17,15 @@ Route::get('email/verify/{token}', 'Auth\VerificationController@verifyEmail')->n
 
 Route::get('/products/search', 'API\ProductController@searchProduct');
 
+Route::get('/provincies', 'API\RegionalController@getProvinces');
+Route::get('/cities', 'API\RegionalController@getCities');
+Route::get('/subdistricts', 'API\RegionalController@getSubdistricts');
+Route::post('/shippingcost', 'API\RajaOngkirController@getShippingCost');
+
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::post('auth/logout', 'API\AuthController@logout');
 
-    Route::group(['prefix' => 'admin'], function () {
+    Route::group(['prefix' => 'admin'], function(){
         Route::get('orders/status/{status}', 'API\TransactionController@getOrders');
         Route::get('banners', 'API\BannerController@getBanners');
         Route::get('carousels', 'API\CarouselController@getCarousels');
