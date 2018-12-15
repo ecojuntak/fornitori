@@ -14,7 +14,12 @@ class Product extends Model
     }
 
     public function carts() {
-        return $this->belongsToMany('App\Cart');
+        return $this->belongsToMany('App\Cart', 'cart_details',
+            'product_id', 'cart_id')->withPivot('quantity');;
+    }
+
+    public function cartDetail() {
+        return $this->hasOne('App\CartDetail');
     }
 
     public function reviews() {

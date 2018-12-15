@@ -31,7 +31,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
         Route::get('{id}/carts', 'API\CartController@getProductInCartByCustomer');
         Route::post('{id}/carts/create', 'API\CartController@insertProductToCart');
 
-        Route::post('{id}/orders/create', 'API\OrderController@createCustomerOrder');
+        Route::post('orders/create', 'API\OrderController@createCustomerOrder');
     });
 
     Route::get('products/{id}', 'API\ProductController@getProduct');
