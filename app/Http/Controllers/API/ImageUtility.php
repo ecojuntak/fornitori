@@ -25,4 +25,12 @@ trait ImageUtility {
 
         return $imageNames;
     }
+
+    function storeSingleImage($image, $folderName) {
+        $imageName = time() . $image->getClientOriginalName();
+        $destinationPath = public_path('/images/' . $folderName);
+        $image->move($destinationPath, $imageName);
+
+        return $imageName;
+    }
 }

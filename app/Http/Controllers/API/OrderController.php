@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\CartDetail;
+use App\Http\Controllers\ImageUtility;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
@@ -10,6 +11,8 @@ use JWTAuth;
 
 class OrderController extends Controller
 {
+    use ImageUtility;
+
     private $user;
 
     public function __construct() {
@@ -53,14 +56,31 @@ class OrderController extends Controller
 
     public function getCustomerOrder() {
         return response()->json([
-            'orders' => $this->user->orders()->with('details.product')->get(),
+            'orders' => $this->user->orders()->with('products')->get(),
             'user' => $this->user
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
     public function getSingleOrder($id) {
         return response()->json([
-            'order' => $this->user->orders()->with('details.product')->find($id)
+            'order' => $this->user->orders()->with('products')->find($id)
+        ], Config::get('messages.SUCCESS_CODE'));
+    }
+
+    public function uploadProofOfPayment(Request $request, $id) {
+        $imageName = $this->storeSingleImage($request->file('image'), 'proof-of-payments');
+
+        $payment = $this->user->orders()->find($id)->payment()->first();
+
+        $payment->proof_of_payment = json_encode([
+            'image' => $imageName,
+            'bank' => $request->bank,
+            'sender_name' => $request->sender_name
+        ]);
+        $payment->update();
+
+        return response()->json([
+            'status' => Config::get('messages.PROOF_OF_PAYMENT_UPLOADED_MESSAGE')
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
@@ -69,7 +89,7 @@ class OrderController extends Controller
 
         foreach ($orders as $order) {
             $products = $order->products()->get();
-            $totalProductCost = $this->countTotalProductCost($products);
+            $totalProductCost = $this->countTotalProductstoreImageCost($products);
 
             $order->payment()->create([
                 'product_cost' => $totalProductCost,
