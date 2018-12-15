@@ -23,7 +23,7 @@ Route::group(['middleware' =>  'public-api'], function () {
 Route::group(['middleware' => ['jwt.auth']], function(){
     Route::post('auth/logout', 'API\AuthController@logout');
 
-    Route::group(['middleware' => 'merchant-guard', 'prefix' => 'admin'], function () {
+    Route::group(['middleware' => 'admin-guard', 'prefix' => 'admin'], function () {
         Route::get('orders/status/{status}', 'API\TransactionController@getOrders');
         Route::get('banners', 'API\BannerController@getBanners');
         Route::post('banners/create', 'API\BannerController@storeBanner');
@@ -41,7 +41,7 @@ Route::group(['middleware' => ['jwt.auth']], function(){
         Route::post('products/{id}/delete', 'API\ProductController@deleteProduct');
     });
 
-    Route::group(['middleware' => 'merchant-guard', 'prefix' => 'customer'], function () {
+    Route::group(['middleware' => 'customer-guard', 'prefix' => 'customer'], function () {
         Route::get('{id}/carts', 'API\CartController@getProductInCartByCustomer');
         Route::post('{id}/carts/create', 'API\CartController@insertProductToCart');
         Route::post('orders/create', 'API\OrderController@createCustomerOrder');
