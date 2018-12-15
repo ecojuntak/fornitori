@@ -17,7 +17,7 @@ class CorsMiddleware
     {
         if($this->isInWhiteList($request->ip())) {
             $response = $next($request);
-            $response->headers->set('Access-Control-Allow-Origin', ['*']);// = '*';
+            $response->headers->set('Access-Control-Allow-Origin', '*');
             $response->headers->set('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, X-Auth-Token');
             $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE');
 
