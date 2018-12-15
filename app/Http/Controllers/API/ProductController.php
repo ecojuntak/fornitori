@@ -7,10 +7,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ImageUtility;
 use Illuminate\Support\Facades\Config;
+use JWTAuth;
 
 class ProductController extends Controller
 {
     use ImageUtility;
+
+    private $user;
+
+    public function __construct() {
+        $this->user = JWTAuth::parseToken()->toUser();
+    }
 
     public function index() {
         return response()->json(Product::all()->orderByDesc('created_at'));
@@ -20,28 +27,27 @@ class ProductController extends Controller
         return response()->json(Product::find($id));
     }
 
-    public function getProductsByMerchant($id) {
-        return response()->json(Product::where('user_id', $id)->orderByDesc('created_at')->get());
+    public function getProductsByMerchant() {
+        return response()->json($this->user->products()->orderByDesc('created_at')->get());
     }
 
-    public function storeProduct(Request $request, $merchantId) {
+    public function storeProduct(Request $request) {
         $imageNames = $request->file('images') !== null ?
             $this->storeImages($request->file('images')) : [];
 
-        $product = new Product();
-        $product->user_id = $merchantId;
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->stock = $request->stock;
-        $product->category = $request->category;
-        $product->specification = json_encode([
-            'dimention' => $request->dimention,
-            'weight' => $request->weight
+        $this->user->products()->create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'category' => $request->category,
+            'specification' => json_encode([
+                                'dimension' => $request->dimention,
+                                'weight' => $request->weight
+                                ]),
+            'description' => $request->description,
+            'color' => $request->color,
+            'images' => json_encode($imageNames)
         ]);
-        $product->description = $request->description;
-        $product->color = $request->color;
-        $product->images = json_encode($imageNames);
-        $product->save();
 
         return response()->json([
             'status' => Config::get('messages.PRODUCT_CREATED_MESSAGE')

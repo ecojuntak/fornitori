@@ -21,8 +21,8 @@ Route::group(['middleware' => 'jwt.auth'], function(){
     Route::post('auth/logout', 'API\AuthController@logout');
 
     Route::group(['prefix' => 'merchant'], function () {
-        Route::get('{id}/products', 'API\ProductController@getProductsByMerchant');
-        Route::post('{merchantId}/products/create', 'API\ProductController@storeProduct');
+        Route::get('products', 'API\ProductController@getProductsByMerchant');
+        Route::post('products/create', 'API\ProductController@storeProduct');
         Route::post('products/{id}/update', 'API\ProductController@updateProduct');
         Route::post('products/{id}/delete', 'API\ProductController@deleteProduct');
     });

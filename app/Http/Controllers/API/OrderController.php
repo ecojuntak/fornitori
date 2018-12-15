@@ -12,8 +12,7 @@ class OrderController extends Controller
 {
     private $user;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->user = JWTAuth::parseToken()->toUser();
     }
 
