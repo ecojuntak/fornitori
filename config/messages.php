@@ -26,6 +26,8 @@ return [
     "CART_UPDATED_MESSAGE" => "Cart updated",
 
     "PROFILE_UPDATED_ADMIN" => "Admin Profile updated",
+    "PASSWORD_UPDATE_ADMIN" => "Admin Password updated",
+    "PASSWORD_NOTMATCHED_ADMIN" => "Admin Password not matched",
 
     "NEW_ORDER_STATUS" => "New order",
     "ORDER_CREATED" => "Order created",

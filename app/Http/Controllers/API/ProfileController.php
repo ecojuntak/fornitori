@@ -35,16 +35,20 @@ class ProfileController extends Controller
         ], Config::get('messages.SUCCESS_CODE'));
       }
 
-      public function editPasswordAdmin(Request $request){
+      public function updatePasswordAdmin(Request $request){
         $user = $this->getAuthincatedUser();
     
-        if($request->password === $request->password_confirm){
+        if($request->password === $request->confirm_password){
           $user->password = bcrypt($request->password);
           $user->update();
     
-          return redirect("/admin/profile")->with("success", "Password changed successfully");
-        } else {
-          return redirect()->back()->with("failed", "Password not matched");
+          return response()->json([
+            'status' => Config::get('messages.PASSWORD_UPDATE_ADMIN')
+        ], Config::get('messages.SUCCESS_CODE'));} 
+        else {
+            return response()->json([
+                'status' => Config::get('messages.PASSWORD_NOTMATCHED_ADMIN')
+            ], Config::get('messages.SUCCESS_CODE'));
         }
     
       }

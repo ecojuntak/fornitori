@@ -38,6 +38,7 @@ Route::group(['middleware' => ['jwt.auth']], function(){
         Route::post('carousels/{id}/update', 'API\CarouselController@updateCarousel');
         Route::post('carousels/{id}/delete', 'API\CarouselController@deleteCarousel');
         Route::post('profiles/update', 'API\ProfileController@updateProfileAdmin');
+        Route::post('profiles/update-password', 'API\ProfileController@updatePasswordAdmin');
     });
 
     Route::group(['middleware' => 'merchant-guard', 'prefix' => 'merchant'], function () {
