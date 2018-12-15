@@ -42,8 +42,8 @@ Route::group(['middleware' => ['jwt.auth']], function(){
     });
 
     Route::group(['middleware' => 'customer-guard', 'prefix' => 'customer'], function () {
-        Route::get('{id}/carts', 'API\CartController@getProductInCartByCustomer');
-        Route::post('{id}/carts/create', 'API\CartController@insertProductToCart');
+        Route::get('carts', 'API\CartController@getProductInCartByCustomer');
+        Route::post('carts/create', 'API\CartController@insertProductToCart');
         Route::post('orders/create', 'API\OrderController@createCustomerOrder');
     });
 
