@@ -48,6 +48,13 @@ class OrderController extends Controller
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
+    public function getCustomerOrder() {
+        return response()->json([
+            'orders' => $this->user->orders()->with('details.product')->get(),
+            'user' => $this->user
+        ], Config::get('messages.SUCCESS_CODE'));
+    }
+
     private function isCartEmpty() {
         return $this->user->cart->details()->get()->count() === 0 ? true : false;
     }
