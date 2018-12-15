@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CorsMiddleware
+class Cors
 {
     /**
      * Handle an incoming request.
@@ -18,8 +18,8 @@ class CorsMiddleware
         if($this->isInWhiteList($request->ip())) {
             $response = $next($request);
             $response->headers->set('Access-Control-Allow-Origin', '*');
-            $response->headers->set('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, X-Auth-Token');
-            $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE');
+            $response->headers->set('Access-Control-Allow-Headers', 'Authorization, App-Token');
+            $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTION');
 
             return $response;
         } else {

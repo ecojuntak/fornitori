@@ -15,10 +15,12 @@ Route::post('auth/login/', 'API\AuthController@login');
 Route::post('auth/register', 'API\RegistrationController@register');
 Route::get('email/verify/{token}', 'Auth\VerificationController@verifyEmail')->name('email.verify');
 
-Route::get('/products/search', 'API\ProductController@searchProduct');
-Route::get('carousels', 'API\CarouselController@getCarousels');
+Route::group(['middleware' =>  'public-api'], function () {
+    Route::get('/products/search', 'API\ProductController@searchProduct');
+    Route::get('carousels', 'API\CarouselController@getCarousels');
+});
 
-Route::group(['middleware' => 'jwt.auth'], function(){
+Route::group(['middleware' => ['jwt.auth']], function(){
     Route::post('auth/logout', 'API\AuthController@logout');
 
     Route::group(['prefix' => 'admin'], function () {
@@ -42,7 +44,6 @@ Route::group(['middleware' => 'jwt.auth'], function(){
     Route::group(['prefix' => 'customer'], function () {
         Route::get('{id}/carts', 'API\CartController@getProductInCartByCustomer');
         Route::post('{id}/carts/create', 'API\CartController@insertProductToCart');
-
         Route::post('orders/create', 'API\OrderController@createCustomerOrder');
     });
 
