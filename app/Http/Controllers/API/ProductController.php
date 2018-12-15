@@ -33,7 +33,7 @@ class ProductController extends Controller
 
     public function storeProduct(Request $request) {
         $imageNames = $request->file('images') !== null ?
-            $this->storeImages($request->file('images')) : [];
+            $this->storeMultipleImages($request->file('images'), 'products') : [];
 
         $this->user->products()->create([
             'name' => $request->name,
@@ -56,8 +56,9 @@ class ProductController extends Controller
 
     public function updateProduct(Request $request, $id) {
         $product = Product::find($id);
+
         $imageNames = $request->file('images') !== null ?
-            json_encode($this->storeImages($request->file('images'))) : $product->images;
+            $this->storeMultipleImages($request->file('images'), 'products') : $product->images;
 
         $product->name = $request->name;
         $product->price = $request->price;
