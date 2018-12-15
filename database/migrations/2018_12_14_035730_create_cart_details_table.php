@@ -19,6 +19,7 @@ class CreateCartDetailsTable extends Migration
             $table->integer('product_id')->unsigned();
             $table->integer('quantity');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('cart_id')->references('id')->on('carts');

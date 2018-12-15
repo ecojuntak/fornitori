@@ -10,11 +10,11 @@ class Order extends Model
         'user_id', 'product_id', 'quantity'
     ];
 
-    public function hasMany() {
+    public function details() {
         return $this->hasMany('App\OrderDetail');
     }
 
     public function customer() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'user_id');
     }
 }

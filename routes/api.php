@@ -15,20 +15,22 @@ Route::post('auth/login/', 'API\AuthController@login');
 Route::post('auth/register', 'API\RegistrationController@register');
 Route::get('email/verify/{token}', 'Auth\VerificationController@verifyEmail')->name('email.verify');
 
-Route::get('/products/search', 'API\ProductController@searchProduct');
+Route::group(['middleware' =>  'public-api'], function () {
+    Route::get('/products/search', 'API\ProductController@searchProduct');
+    Route::get('carousels', 'API\CarouselController@getCarousels');
+});
 
 Route::get('/provincies', 'API\RegionalController@getProvinces');
 Route::get('/cities', 'API\RegionalController@getCities');
 Route::get('/subdistricts', 'API\RegionalController@getSubdistricts');
 Route::post('/shippingcost', 'API\RajaOngkirController@getShippingCost');
 
-Route::group(['middleware' => 'jwt.auth'], function(){
+Route::group(['middleware' => ['jwt.auth']], function(){
     Route::post('auth/logout', 'API\AuthController@logout');
 
-    Route::group(['prefix' => 'admin'], function(){
+    Route::group(['middleware' => 'admin-guard', 'prefix' => 'admin'], function () {
         Route::get('orders/status/{status}', 'API\TransactionController@getOrders');
         Route::get('banners', 'API\BannerController@getBanners');
-        Route::get('carousels', 'API\CarouselController@getCarousels');
         Route::post('banners/create', 'API\BannerController@storeBanner');
         Route::post('banners/{id}/update', 'API\BannerController@updateBanner');
         Route::post('banners/{id}/delete', 'API\BannerController@deleteBanner');
@@ -37,18 +39,18 @@ Route::group(['middleware' => 'jwt.auth'], function(){
         Route::post('carousels/{id}/delete', 'API\CarouselController@deleteCarousel');
     });
 
-    Route::group(['prefix' => 'merchant'], function () {
-        Route::get('{id}/products', 'API\ProductController@getProductsByMerchant');
-        Route::post('{merchantId}/products/create', 'API\ProductController@storeProduct');
+    Route::group(['middleware' => 'merchant-guard', 'prefix' => 'merchant'], function () {
+        Route::get('products', 'API\ProductController@getProductsByMerchant');
+        Route::post('products/create', 'API\ProductController@storeProduct');
         Route::post('products/{id}/update', 'API\ProductController@updateProduct');
         Route::post('products/{id}/delete', 'API\ProductController@deleteProduct');
     });
 
-    Route::group(['prefix' => 'customer'], function () {
-        Route::get('{id}/carts', 'API\CartController@getProductInCartByCustomer');
-        Route::post('{id}/carts/create', 'API\CartController@insertProductToCart');
-
-        Route::post('{id}/orders/create', 'API\OrderController@createCustomerOrder');
+    Route::group(['middleware' => 'customer-guard', 'prefix' => 'customer'], function () {
+        Route::get('carts', 'API\CartController@getProductInCartByCustomer');
+        Route::post('carts/create', 'API\CartController@insertProductToCart');
+        Route::get('orders', 'API\OrderController@getCustomerOrder');
+        Route::post('orders/create', 'API\OrderController@createCustomerOrder');
     });
 
     Route::get('products/{id}', 'API\ProductController@getProduct');
