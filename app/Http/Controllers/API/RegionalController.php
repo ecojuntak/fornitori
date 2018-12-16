@@ -4,27 +4,25 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use GuzzleHttp\Client;
 use DB;
+use App\Province;
+use App\City;
+use RajaOngkirHelper;
 
 class RegionalController extends Controller
 {
+    use RajaOngkirHelper;
+
     public function getProvinces() {
-        return response()->json(DB::table('provincies')->get());
+        return response()->json(Province::all());
     }
 
     public function getCities(Request $request) {
-        return response()->json(DB::table('cities')->where('province_id', $request->pro_id)->get());
+        return response()->json(City::where('province_id', $request->pro_id)->get());
     }
 
     public function getSubdistricts(Request $request) {
-        
-        $client = new Client([
-            'base_uri' => 'https://pro.rajaongkir.com/api/',
-            'headers' => [
-                "key" => env("RAJAONGKIR_API_KEY")
-            ]
-        ]);
+        $client = $this->createClient();
 
         $result = $client->request('GET', 'subdistrict?city=' . $request->city_id);
         return $result->getBody()->getContents();
