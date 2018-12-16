@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers\API;
+
 use GuzzleHttp\Client;
 
 trait RajaOngkirHelper {

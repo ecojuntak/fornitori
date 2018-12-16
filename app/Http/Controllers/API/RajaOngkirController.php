@@ -4,10 +4,12 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use GuzzleHttp\Client;
+use App\Http\Controllers\API\RajaOngkirHelper;
 
 class RajaOngkirController extends Controller
 {
+    use RajaOngkirHelper;
+
     public function getShippingCost(Request $request) {
         $client = $this->createClient();
         $payload = $request->all(); 

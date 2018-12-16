@@ -18,12 +18,13 @@ Route::get('email/verify/{token}', 'Auth\VerificationController@verifyEmail')->n
 Route::group(['middleware' =>  'public-api'], function () {
     Route::get('/products/search', 'API\ProductController@searchProduct');
     Route::get('carousels', 'API\CarouselController@getCarousels');
-});
 
-Route::get('/provincies', 'API\RegionalController@getProvinces');
-Route::get('/cities', 'API\RegionalController@getCities');
-Route::get('/subdistricts', 'API\RegionalController@getSubdistricts');
-Route::post('/shippingcost', 'API\RajaOngkirController@getShippingCost');
+    Route::get('provinces', 'API\RegionalController@getProvinces');
+    Route::get('cities', 'API\RegionalController@getCities');
+    Route::get('subdistricts', 'API\RegionalController@getSubdistricts');
+    Route::post('shipping-cost', 'API\RajaOngkirController@getShippingCost');
+
+});
 
 Route::group(['middleware' => ['jwt.auth']], function(){
     Route::post('auth/logout', 'API\AuthController@logout');

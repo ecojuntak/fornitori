@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use App\Province;
 use App\City;
-use RajaOngkirHelper;
+use App\Http\Controllers\API\RajaOngkirHelper;
 
 class RegionalController extends Controller
 {
