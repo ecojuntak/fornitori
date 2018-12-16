@@ -20,6 +20,11 @@ Route::group(['middleware' =>  'public-api'], function () {
     Route::get('carousels', 'API\CarouselController@getCarousels');
 });
 
+Route::get('/provincies', 'API\RegionalController@getProvinces');
+Route::get('/cities', 'API\RegionalController@getCities');
+Route::get('/subdistricts', 'API\RegionalController@getSubdistricts');
+Route::post('/shippingcost', 'API\RajaOngkirController@getShippingCost');
+
 Route::group(['middleware' => ['jwt.auth']], function(){
     Route::post('auth/logout', 'API\AuthController@logout');
 
@@ -32,6 +37,8 @@ Route::group(['middleware' => ['jwt.auth']], function(){
         Route::post('carousels/create', 'API\CarouselController@storeCarousel');
         Route::post('carousels/{id}/update', 'API\CarouselController@updateCarousel');
         Route::post('carousels/{id}/delete', 'API\CarouselController@deleteCarousel');
+        Route::post('profiles/update', 'API\ProfileController@updateProfileAdmin');
+        Route::post('profiles/update-password', 'API\ProfileController@updatePasswordAdmin');
     });
 
     Route::group(['middleware' => 'merchant-guard', 'prefix' => 'merchant'], function () {
