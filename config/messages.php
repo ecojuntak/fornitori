@@ -30,6 +30,10 @@ return [
     "PASSWORD_NOTMATCHED_ADMIN" => "Admin Password not matched",
     "PASSWORD_UPDATE_MATCHED" => "Password updated",
     "PASSWORD_UPDATE_NONMATCHED" => "Password not matched",
+    "PASSWORD_UPDATE_MERCHANT" => "Merchant Password updated",
+    "PASSWORD_NOTMATCHED_MERCHANT" => "Merchant Password not matched",
+    "PASSWORD_UPDATE_CUSTOMER" => "Customer Password updated",
+    "PASSWORD_NOTMATCHED_CUSTOMER" => "Customer Password not matched",
 
     "NEW_ORDER_STATUS" => "New order",
     "ORDER_CREATED" => "Order created",

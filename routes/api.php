@@ -47,6 +47,7 @@ Route::group(['middleware' => ['jwt.auth']], function(){
         Route::post('products/create', 'API\ProductController@storeProduct');
         Route::post('products/{id}/update', 'API\ProductController@updateProduct');
         Route::post('products/{id}/delete', 'API\ProductController@deleteProduct');
+        Route::post('profiles/update-password', 'API\ProfileController@updatePasswordMerchant');
     });
 
     Route::group(['middleware' => 'customer-guard', 'prefix' => 'customer'], function () {
@@ -57,6 +58,7 @@ Route::group(['middleware' => ['jwt.auth']], function(){
         Route::post('orders/create', 'API\OrderController@createCustomerOrder');
         Route::get('orders/{id}', 'API\OrderController@getSingleOrder');
         Route::post('orders/{id}/upload-proof-of-payment', 'API\OrderController@uploadProofOfPayment');
+        Route::post('profiles/update-password', 'API\ProfileController@updatePasswordCustomer');
     });
 
     Route::get('products/{id}', 'API\ProductController@getProduct');
