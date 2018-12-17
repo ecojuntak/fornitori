@@ -68,11 +68,19 @@ class OrderController extends Controller
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
-    public function getOrderByMerchant() {
+    public function getMerchantOrders() {
         $orders = Order::with('products', 'customer.profile')->where('merchant_id', $this->user->id)->get();
 
         return response()->json([
             'orders' => $orders
+        ], Config::get('messages.SUCCESS_CODE'));
+    }
+
+    public function getMerchantSingleOrder($id) {
+        $order = Order::with('products', 'customer.profile')->where('merchant_id', $this->user->id)->find($id);
+
+        return response()->json([
+            'order' => $order
         ], Config::get('messages.SUCCESS_CODE'));
     }
 

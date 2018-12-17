@@ -51,7 +51,8 @@ Route::group(['middleware' => ['jwt.auth']], function(){
         Route::post('products/{id}/update', 'API\ProductController@updateProduct');
         Route::post('products/{id}/delete', 'API\ProductController@deleteProduct');
 
-        Route::get('orders', 'API\OrderController@getOrderByMerchant');
+        Route::get('orders', 'API\OrderController@getMerchantOrders');
+        Route::get('orders/{id}', 'API\OrderController@getMerchantSingleOrder');
 
         Route::post('profiles/update-password', 'API\ProfileController@updatePassword');
     });
