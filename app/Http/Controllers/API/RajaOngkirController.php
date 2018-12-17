@@ -4,19 +4,14 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use GuzzleHttp\Client;
+use App\Http\Controllers\API\RajaOngkirHelper;
 
 class RajaOngkirController extends Controller
 {
-    public function getShippingCost(Request $request) {
-        $client = new Client([
-            'base_uri' => 'https://pro.rajaongkir.com/api/',
-            'headers' => [
-                "key" => env('RAJAONGKIR_API_KEY'),
-                "Content-Type" => "application/x-www-form-urlencoded"
-            ]
-        ]);
+    use RajaOngkirHelper;
 
+    public function getShippingCost(Request $request) {
+        $client = $this->createClient();
         $payload = $request->all(); 
 
         $result = $client->request('POST', 'cost', ['form_params' => $payload]);

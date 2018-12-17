@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Cart;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -18,9 +19,11 @@ class RegistrationController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->role = $request->role;
-        $user->status = $request->role === Config::get('messages.ROLE_CUSTOMER') ? Config::get('messages.VERIFIED_STATUS') : "-";
+        $user->status = $request->role === Config::get('messages.ROLE_CUSTOMER') ?
+            Config::get('messages.VERIFIED_STATUS') : "-";
         $user->save();
 
+        $this->createCart($user);
         $this->createVerificationToken($user);
 
         event(new UserRegisteredEvent($user));
@@ -35,6 +38,12 @@ class RegistrationController extends Controller
         VerifyUser::create([
             'user_id' => $user->id,
             'token' => str_random(40)
+        ]);
+    }
+
+    private function createCart($user) {
+        Cart::create([
+            "user_id" => $user->id,
         ]);
     }
 }

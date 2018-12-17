@@ -19,7 +19,7 @@ class Product extends Model
     }
 
     public function cartDetail() {
-        return $this->hasOne('App\CartDetail');
+        return $this->belongsTo('App\CartDetail');
     }
 
     public function reviews() {
