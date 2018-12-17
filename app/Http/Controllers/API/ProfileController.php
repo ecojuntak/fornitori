@@ -8,23 +8,20 @@ use App\User;
 use App\Profile;
 use Illuminate\Support\Facades\Config;
 use Auth;
+use JWTAuth;
 
 class ProfileController extends Controller
 {
-    private function getAuthincatedUser() {
-        $user = User::with('profile')->find(Auth::user()->id);
-        $address = json_decode(json_decode($user->profile->address)[0]);
-        $user->profile->address = $address;
-    
-        return $user;
+    private $user;
+
+    public function __construct() {
+        $this->user = JWTAuth::parseToken()->toUser();
     }
 
     private function updatePassword(){
-        $user = $this->getAuthincatedUser();
-    
         if($request->password === $request->confirm_password){
-          $user->password = bcrypt($request->password);
-          $user->update();
+          $this->user->password = bcrypt($request->password);
+          $this->user->update();
     
           return response()->json([
             'status' => Config::get('messages.PASSWORD_UPDATE_MATCHED')
@@ -38,7 +35,6 @@ class ProfileController extends Controller
       }
 
     public function updateProfileAdmin(Request $request){
-        $user = $this->getAuthincatedUser(); 
         $profile = [];
         $imageName = $request->file('photo') !== null ?
         $this->storeImages($request->file('photo')) : [];
@@ -46,7 +42,7 @@ class ProfileController extends Controller
         $profile['phone'] = $request->phone;
         $profile['photo'] = json_encode($imageName);
     
-        $user->profile()->update($profile);
+        $this->user->profile()->update($profile);
     
         return response()->json([
             'status' => Config::get('messages.PROFILE_UPDATED_ADMIN')
@@ -54,11 +50,9 @@ class ProfileController extends Controller
       }
 
       public function updatePasswordAdmin(Request $request){
-        $user = $this->getAuthincatedUser();
-    
         if($request->password === $request->confirm_password){
-          $user->password = bcrypt($request->password);
-          $user->update();
+          $this->user->password = bcrypt($request->password);
+          $this->user->update();
     
           return response()->json([
             'status' => Config::get('messages.PASSWORD_UPDATE_ADMIN')
@@ -72,11 +66,9 @@ class ProfileController extends Controller
       }
 
       public function updatePasswordMerchant(Request $request){
-        $user = $this->getAuthincatedUser();
-    
         if($request->password === $request->confirm_password){
-          $user->password = bcrypt($request->password);
-          $user->update();
+          $this->user->password = bcrypt($request->password);
+          $this->user->update();
     
           return response()->json([
             'status' => Config::get('messages.PASSWORD_UPDATE_MERCHANT')
@@ -90,11 +82,9 @@ class ProfileController extends Controller
       }
 
       public function updatePasswordCustomer(Request $request){
-        $user = $this->getAuthincatedUser();
-    
         if($request->password === $request->confirm_password){
-          $user->password = bcrypt($request->password);
-          $user->update();
+          $this->user->password = bcrypt($request->password);
+          $this->user->update();
     
           return response()->json([
             'status' => Config::get('messages.PASSWORD_UPDATE_CUSTOMER')
