@@ -21,22 +21,6 @@ class ProfileController extends Controller
         $this->user = JWTAuth::parseToken()->toUser();
     }
 
-    private function updatePassword(){
-        if($request->password === $request->confirm_password){
-          $this->user->password = bcrypt($request->password);
-          $this->user->update();
-    
-          return response()->json([
-            'status' => Config::get('messages.PASSWORD_UPDATE_MATCHED')
-        ], Config::get('messages.SUCCESS_CODE'));} 
-        else {
-            return response()->json([
-                'status' => Config::get('messages.PASSWORD_UPDATE_NONMATCHED')
-            ], Config::get('messages.SUCCESS_CODE'));
-        }
-    
-      }
-
     public function updateProfileAdmin(Request $request){
         $profile = [];
         $imageName = $request->file('photo') !== null ?
@@ -52,51 +36,50 @@ class ProfileController extends Controller
         ], Config::get('messages.SUCCESS_CODE'));
       }
 
-      public function updatePasswordAdmin(Request $request){
-        if($request->password === $request->confirm_password){
-          $this->user->password = bcrypt($request->password);
-          $this->user->update();
-    
-          return response()->json([
-            'status' => Config::get('messages.PASSWORD_UPDATE_ADMIN')
-        ], Config::get('messages.SUCCESS_CODE'));} 
-        else {
+    public function updatePassword(Request $request){
+        JWTAuth::invalidate();
+        
+        if($this->user->role === 'admin'){
+            if($request->password === $request->confirm_password){
+            $this->user->password = bcrypt($request->password);
+            $this->user->update();
+        
             return response()->json([
-                'status' => Config::get('messages.PASSWORD_NOTMATCHED_ADMIN')
-            ], Config::get('messages.SUCCESS_CODE'));
+                'status' => Config::get('messages.PASSWORD_UPDATE_ADMIN')
+            ], Config::get('messages.SUCCESS_CODE'));} 
+            else {
+                return response()->json([
+                    'status' => Config::get('messages..PASSWORD_NOTMATCHED_ADMIN')
+                ], Config::get('messages.SUCCESS_CODE'));
+            }
         }
-    
-      }
-
-      public function updatePasswordMerchant(Request $request){
-        if($request->password === $request->confirm_password){
-          $this->user->password = bcrypt($request->password);
-          $this->user->update();
-    
-          return response()->json([
-            'status' => Config::get('messages.PASSWORD_UPDATE_MERCHANT')
-        ], Config::get('messages.SUCCESS_CODE'));} 
-        else {
+        else if($this->user->role === 'merchant'){
+            if($request->password === $request->confirm_password){
+            $this->user->password = bcrypt($request->password);
+            $this->user->update();
+        
             return response()->json([
-                'status' => Config::get('messages.PASSWORD_NOTMATCHED_MERCHANT')
-            ], Config::get('messages.SUCCESS_CODE'));
+                'status' => Config::get('messages.PASSWORD_UPDATE_MERCHANT')
+            ], Config::get('messages.SUCCESS_CODE'));} 
+            else {
+                return response()->json([
+                    'status' => Config::get('messages..PASSWORD_NOTMATCHED_MERCHANT')
+                ], Config::get('messages.SUCCESS_CODE'));
+            }
         }
-    
-      }
-
-      public function updatePasswordCustomer(Request $request){
-        if($request->password === $request->confirm_password){
-          $this->user->password = bcrypt($request->password);
-          $this->user->update();
-    
-          return response()->json([
-            'status' => Config::get('messages.PASSWORD_UPDATE_CUSTOMER')
-        ], Config::get('messages.SUCCESS_CODE'));} 
-        else {
+        else if($this->user->role === 'customer'){
+            if($request->password === $request->confirm_password){
+            $this->user->password = bcrypt($request->password);
+            $this->user->update();
+        
             return response()->json([
-                'status' => Config::get('messages.PASSWORD_NOTMATCHED_CUSTOMER')
-            ], Config::get('messages.SUCCESS_CODE'));
+                'status' => Config::get('messages.PASSWORD_UPDATE_CUSTOMER')
+            ], Config::get('messages.SUCCESS_CODE'));} 
+            else {
+                return response()->json([
+                    'status' => Config::get('messages..PASSWORD_NOTMATCHED_CUSTOMER')
+                ], Config::get('messages.SUCCESS_CODE'));
+            }
         }
-    
       }
 }
