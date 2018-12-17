@@ -37,18 +37,17 @@ class ProfileController extends Controller
       }
 
     public function updatePassword(Request $request){
-        JWTAuth::invalidate();
-
         if($request->password === $request->confirm_password){
-        $this->user->password = bcrypt($request->password);
-        $this->user->update();
-        
-        return response()->json([
-            'status' => Config::get('messages.PASSWORD_UPDATE_STATUS')
-        ], Config::get('messages.SUCCESS_CODE'));} 
-        else {
+            $this->user->password = bcrypt($request->password);
+            $this->user->update();
+            JWTAuth::invalidate();
+            
             return response()->json([
-                'status' => Config::get('messages..PASSWORD_NOTMATCHED_STATUS')
+                'status' => Config::get('messages.PASSWORD_UPDATE_STATUS')
+            ], Config::get('messages.SUCCESS_CODE'));
+        } else {
+            return response()->json([
+                'status' => Config::get('messages.PASSWORD_NOTMATCHED_STATUS')
             ], Config::get('messages.SUCCESS_CODE'));
         }
         
