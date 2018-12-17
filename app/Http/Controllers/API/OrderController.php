@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\CartDetail;
 use App\Http\Controllers\ImageUtility;
+use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
@@ -84,12 +85,20 @@ class OrderController extends Controller
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
+    public function getOrdersByStatus($status){
+        $orders = Order::where('status', $status)->with('products', 'customer')->get();
+
+        return response()->json([
+            'orders' => $orders
+        ], Config::get('messages.SUCCESS_CODE'));
+    }
+
     private function createOrderPayment($shippingCost) {
         $orders = $this->user->orders()->get();
 
         foreach ($orders as $order) {
             $products = $order->products()->get();
-            $totalProductCost = $this->countTotalProductstoreImageCost($products);
+            $totalProductCost = $this->countTotalProductCost($products);
 
             $order->payment()->create([
                 'product_cost' => $totalProductCost,
