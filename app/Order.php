@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'user_id', 'product_id', 'quantity'
+        'customer_id', 'merchant_id', 'product_id'
     ];
 
     public function detail() {
@@ -19,7 +19,11 @@ class Order extends Model
     }
 
     public function customer() {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\User', 'customer_id');
+    }
+
+    public function merchant() {
+        return $this->belongsTo('App\User', 'merchant_id');
     }
 
     public function shipping() {

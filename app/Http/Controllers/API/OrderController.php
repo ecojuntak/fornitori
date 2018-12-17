@@ -35,7 +35,9 @@ class OrderController extends Controller
         $groupedProducts = $this->groupProductByMerchant($merchantProducts);
 
         foreach ($groupedProducts as $merchantId => $merchantProductIds) {
-            $order = $this->user->orders()->create();
+            $order = $this->user->orders()->create([
+                'merchant_id' => $merchantId
+            ]);
 
             $orderDetails = CartDetail::whereIn('product_id', $merchantProductIds)->get();
 
@@ -59,14 +61,14 @@ class OrderController extends Controller
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
-    public function getCustomerOrder() {
+    public function getCustomerOrders() {
         return response()->json([
             'orders' => $this->user->orders()->with('products')->get(),
             'user' => $this->user
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
-    public function getSingleOrder($id) {
+    public function getCustomerSingleOrder($id) {
         return response()->json([
             'order' => $this->user->orders()->with('products')->find($id)
         ], Config::get('messages.SUCCESS_CODE'));

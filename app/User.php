@@ -55,7 +55,7 @@ class User extends Authenticatable implements JWTSubject{
     }
 
     public function orders() {
-        return $this->hasMany('App\Order');
+        return $this->hasMany('App\Order', 'customer_id');
     }
 
     public function sendEmailVerificationNotification() {

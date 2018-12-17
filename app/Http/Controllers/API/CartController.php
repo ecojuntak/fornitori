@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Cart;
@@ -17,7 +16,7 @@ class CartController extends Controller
         $this->user = JWTAuth::parseToken()->toUser();
     }
 
-    public function getProductInCartByCustomer() {
+    public function getProductInCart() {
         return response()->json([
             "cart" => Cart::with('products')->where('user_id', $this->user->id)->orderByDesc('created_at')->first(),
             "user" => $this->user
