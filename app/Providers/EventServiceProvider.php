@@ -13,6 +13,10 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         \App\Events\UserRegisteredEvent::class => [\App\Listeners\SendVerificationEmail::class],
+        \App\Events\OrderCreatedEvent::class => [
+            \App\Listeners\SendOrderCreatedToCustomer::class,
+            \App\Listeners\SendOrderCreatedToMerchant::class
+        ]
     ];
 
     /**

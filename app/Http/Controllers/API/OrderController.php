@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\CartDetail;
+use App\Events\OrderCreatedEvent;
 use App\Http\Controllers\ImageUtility;
 use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
 use JWTAuth;
+use App\User;
 
 class OrderController extends Controller
 {
@@ -24,7 +26,7 @@ class OrderController extends Controller
         if($this->isCartEmpty()) {
             return response()->json([
                 'status' => Config::get('messages.CART_EMPTY')
-                ], Config::get('messages.SUCCESS_CODE')
+            ], Config::get('messages.SUCCESS_CODE')
             );
         }
 
@@ -43,10 +45,12 @@ class OrderController extends Controller
                     'quantity' => $detail->quantity,
                 ]);
             }
-        }
 
-        $this->createOrderShipping($request->address);
-        $this->createOrderPayment($request->shippingCost);
+            $this->createOrderShipping($order, $request->address);
+            $this->createOrderPayment($order, $request->shippingCost);
+
+            event(new OrderCreatedEvent($this->user, User::find($merchantId)));
+        }
 
         $this->clearCustomerCart();
 
@@ -93,28 +97,20 @@ class OrderController extends Controller
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
-    private function createOrderPayment($shippingCost) {
-        $orders = $this->user->orders()->get();
+    private function createOrderPayment($order, $shippingCost) {
+        $products = $order->products()->get();
+        $totalProductCost = $this->countTotalProductCost($products);
 
-        foreach ($orders as $order) {
-            $products = $order->products()->get();
-            $totalProductCost = $this->countTotalProductCost($products);
-
-            $order->payment()->create([
-                'product_cost' => $totalProductCost,
-                'shipping_cost' => $shippingCost,
-            ]);
-        }
+        $order->payment()->create([
+            'product_cost' => $totalProductCost,
+            'shipping_cost' => $shippingCost,
+        ]);
     }
 
-    private function createOrderShipping($address) {
-        $orders = $this->user->orders()->get();
-
-        foreach ($orders as $order) {
-           $order->shipping()->create([
-                'address' => $address
-           ]);
-        }
+    private function createOrderShipping($order, $address) {
+        $order->shipping()->create([
+            'address' => $address
+        ]);
     }
 
     private function countTotalProductCost($products) {

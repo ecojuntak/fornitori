@@ -2,9 +2,10 @@
 
 namespace App;
 
+use App\Notifications\EmailProductOrderedCustomer;
+use App\Notifications\EmailProductOrderedMerchant;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\EmailRegistration;
 
@@ -59,5 +60,13 @@ class User extends Authenticatable implements JWTSubject{
 
     public function sendEmailVerificationNotification() {
         $this->notify(new EmailRegistration($this));
+    }
+
+    public function sendOrderedProductEmailToCustomer() {
+        $this->notify(new EmailProductOrderedCustomer($this));
+    }
+
+    public function sendOrderedProductEmailToMerchant() {
+        $this->notify(new EmailProductOrderedMerchant($this));
     }
 }
