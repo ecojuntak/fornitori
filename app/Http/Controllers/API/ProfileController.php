@@ -9,9 +9,12 @@ use App\Profile;
 use Illuminate\Support\Facades\Config;
 use Auth;
 use JWTAuth;
+use App\Http\Controllers\ImageUtility;
 
 class ProfileController extends Controller
 {
+    use ImageUtility;
+
     private $user;
 
     public function __construct() {
@@ -37,7 +40,7 @@ class ProfileController extends Controller
     public function updateProfileAdmin(Request $request){
         $profile = [];
         $imageName = $request->file('photo') !== null ?
-        $this->storeImages($request->file('photo')) : [];
+            $this->storeSingleImage($request->file('photo'), 'profiles') : [];
         $profile['name'] = $request->name;  
         $profile['phone'] = $request->phone;
         $profile['photo'] = json_encode($imageName);
