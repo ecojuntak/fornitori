@@ -40,6 +40,14 @@ class UserTableSeeder extends Seeder
                 ]
             ]);
         }
+
+        $customer->profile()->create([
+            'name' => 'Customer Uloszone',
+            'address' => '["{\"name\":null,\"province_id\":34,\"city_id\":481,\"subdistrict_id\":\"6657\",\"province_name\":\"Sumatera Utara\",\"city_name\":\"Toba Samosir\",\"subdistrict_name\":\"Laguboti\",\"postal_code\":\"22316\",\"detail\":\"Simpang Empat Laguboti\"}"]',
+            'phone' => '+628230448xxxx',
+            'gender' => Config::get('messages.GENDER_MALE'),
+            'birthday' => Carbon::now(),
+        ]);
     }
 
     private function createMerchant() {
@@ -64,6 +72,14 @@ class UserTableSeeder extends Seeder
                 'color' => 'black',
             ]);
         }
+
+        $merchant->profile()->create([
+            'name' => 'Merchant Uloszone',
+            'address' => '["{\"name\":null,\"province_id\":34,\"city_id\":481,\"subdistrict_id\":\"6657\",\"province_name\":\"Sumatera Utara\",\"city_name\":\"Toba Samosir\",\"subdistrict_name\":\"Laguboti\",\"postal_code\":\"22316\",\"detail\":\"Simpang Empat Laguboti\"}"]',
+            'phone' => '+628230448xxxx',
+            'gender' => Config::get('messages.GENDER_MALE'),
+            'birthday' => Carbon::now(),
+        ]);
 
         $merchant = User::create([
             "username" => "merchantdua",
