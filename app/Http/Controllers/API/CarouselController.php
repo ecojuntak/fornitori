@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Config;
 class CarouselController extends Controller
 {
     public function getCarousels() {
-        return response()->json(Carousel::all());
+        return response()->json([
+            "carousels" => Carousel::all()
+        ], Config::get('messages.SUCCESS_CODE'));
     }
 
     public function storeCarousel(Request $request)

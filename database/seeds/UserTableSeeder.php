@@ -22,7 +22,7 @@ class UserTableSeeder extends Seeder
     private function createCustomer() {
         $customer = User::create([
             "username" => "customer",
-            "email" => "customer@uloszone.com",
+            "email" => "ecojuntak@gmail.com",
             "password" => bcrypt("customer123"),
             "role" => "customer",
             "email_verified_at" => Carbon::now(),
@@ -53,7 +53,7 @@ class UserTableSeeder extends Seeder
     private function createMerchant() {
         $merchant = User::create([
             "username" => "merchant",
-            "email" => "merchant@uloszone.com",
+            "email" => "paltigcsinaga@gmail.com",
             "password" => bcrypt("merchant123"),
             "role" => "merchant",
             "email_verified_at" => Carbon::now(),
@@ -83,7 +83,7 @@ class UserTableSeeder extends Seeder
 
         $merchant = User::create([
             "username" => "merchantdua",
-            "email" => "merchantdua@uloszone.com",
+            "email" => "edwardsaragih97@gmail.com",
             "password" => bcrypt("merchantdua123"),
             "role" => "merchant",
             "email_verified_at" => Carbon::now(),
