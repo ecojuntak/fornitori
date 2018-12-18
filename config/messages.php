@@ -29,6 +29,8 @@ return [
     "PASSWORD_UPDATE_ADMIN" => "Admin Password updated",
     "PASSWORD_NOTMATCHED_ADMIN" => "Admin Password not matched",
 
+    "STATUS_BANNER_NONACTIVATED" => "nonactivated",
+
     "NEW_ORDER_STATUS" => "New order",
     "ORDER_CREATED" => "Order created",
     "CART_EMPTY" => "Cart is empty",

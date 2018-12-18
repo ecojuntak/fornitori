@@ -35,6 +35,7 @@ class BannerController extends Controller
         $banner->description = $request->description;
         $banner->link = $request->link;       
         $banner->image = json_encode($imageNames);
+        $banner->status = Config::get('messages.STATUS_BANNER_NONACTIVATED');
         $banner->save();
 
         return response()->json([
