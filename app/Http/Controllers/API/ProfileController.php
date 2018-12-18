@@ -8,48 +8,48 @@ use App\User;
 use App\Profile;
 use Illuminate\Support\Facades\Config;
 use Auth;
+use JWTAuth;
+use App\Http\Controllers\ImageUtility;
 
 class ProfileController extends Controller
 {
-    private function getAuthincatedUser() {
-        $user = User::with('profile')->find(Auth::user()->id);
-        $address = json_decode(json_decode($user->profile->address)[0]);
-        $user->profile->address = $address;
-    
-        return $user;
-      }
+    use ImageUtility;
+
+    private $user;
+
+    public function __construct() {
+        $this->user = JWTAuth::parseToken()->toUser();
+    }
 
     public function updateProfileAdmin(Request $request){
-        $user = $this->getAuthincatedUser(); 
         $profile = [];
         $imageName = $request->file('photo') !== null ?
-        $this->storeImages($request->file('photo')) : [];
+            $this->storeSingleImage($request->file('photo'), 'profiles') : [];
         $profile['name'] = $request->name;  
         $profile['phone'] = $request->phone;
         $profile['photo'] = json_encode($imageName);
     
-        $user->profile()->update($profile);
+        $this->user->profile()->update($profile);
     
         return response()->json([
             'status' => Config::get('messages.PROFILE_UPDATED_ADMIN')
         ], Config::get('messages.SUCCESS_CODE'));
       }
 
-      public function updatePasswordAdmin(Request $request){
-        $user = $this->getAuthincatedUser();
-    
+    public function updatePassword(Request $request){
         if($request->password === $request->confirm_password){
-          $user->password = bcrypt($request->password);
-          $user->update();
-    
-          return response()->json([
-            'status' => Config::get('messages.PASSWORD_UPDATE_ADMIN')
-        ], Config::get('messages.SUCCESS_CODE'));} 
-        else {
+            $this->user->password = bcrypt($request->password);
+            $this->user->update();
+            JWTAuth::invalidate();
+            
             return response()->json([
-                'status' => Config::get('messages.PASSWORD_NOTMATCHED_ADMIN')
+                'status' => Config::get('messages.PASSWORD_UPDATE_STATUS')
+            ], Config::get('messages.SUCCESS_CODE'));
+        } else {
+            return response()->json([
+                'status' => Config::get('messages.PASSWORD_NOTMATCHED_STATUS')
             ], Config::get('messages.SUCCESS_CODE'));
         }
-    
-      }
+        
+    }
 }
