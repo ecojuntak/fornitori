@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Carousel;
+use JWTAuth;
 use Illuminate\Support\Facades\Config;
 
 class CarouselController extends Controller
@@ -23,6 +24,7 @@ class CarouselController extends Controller
         $carousel->image = json_encode($imageNames);
         $carousel->status = 'nonactive';
         $carousel->save();
+        JWTAuth::invalidate();
 
         return response()->json([
             'status' => Config::get('messages.CAROUSEL_CREATED_MESSAGE')
@@ -37,7 +39,9 @@ class CarouselController extends Controller
         $carousel->link = $request->link;
         $carousel->description = $request->description;
         $carousel->image = json_encode($imageNames);
+        $carousel->status = $request->status;
         $carousel->save();
+        JWTAuth::invalidate();
 
         return response()->json([
             'status' => Config::get('messages.CAROUSEL_CREATED_MESSAGE')

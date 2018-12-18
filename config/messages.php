@@ -19,16 +19,21 @@ return [
     "NEW_ORDER_MESSAGE" => "List New Order",
     "BANNER_CREATED_MESSAGE" => "Banner created",
     "BANNER_DELETED_STATUS" => "Banner deleted",
+
     "CAROUSEL_CREATED_MESSAGE" => "Carousel created",
     "CAROUSEL_DELETED_STATUS" => "Carousel deleted",
+    "CAROUSEL_STATUS_ACTIVE" => "active",
+    "CAROUSEL_STATUS_NONACTIVE" => "nonactive",
 
     "CART_CREATED_MESSAGE" => "Cart created",
     "CART_UPDATED_MESSAGE" => "Cart updated",
 
     "PROFILE_UPDATED_ADMIN" => "Admin Profile updated",
-    "PASSWORD_UPDATE_STATUS" => "Password updated",
-    "PASSWORD_NOTMATCHED_STATUS" => "Password not matched",
-   
+    "PASSWORD_UPDATE_ADMIN" => "Admin Password updated",
+    "PASSWORD_NOTMATCHED_ADMIN" => "Admin Password not matched",
+
+    "STATUS_BANNER_NONACTIVATED" => "nonactivated",
+
     "NEW_ORDER_STATUS" => "New order",
     "ORDER_CREATED" => "Order created",
     "CART_EMPTY" => "Cart is empty",
