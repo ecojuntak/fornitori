@@ -26,7 +26,7 @@ class ProductController extends Controller
     }
 
     public function getProduct($id) {
-        $product = Product::with('merchant')->find($id);
+        $product = Product::with('merchant', 'reviews.reviewer')->find($id);
         $product = $this->decodeSerializedData($product);
 
         return response()->json([
