@@ -105,6 +105,15 @@ class ProductController extends Controller
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
+    public function getAllProducts() {
+        $products = Product::with('merchant')->inRandomOrder()->get();
+        $products = $this->decodeImages($products);
+
+        return response()->json([
+            'products' => $products
+        ], Config::get('messages.SUCCESS_CODE'));
+    }
+
     private function decodeImages($products) {
         foreach ($products as $product) {
             $product->images = json_decode($product->images);

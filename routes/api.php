@@ -25,7 +25,7 @@ Route::group(['middleware' =>  'public-api'], function () {
     Route::post('shipping-cost', 'API\RajaOngkirController@getShippingCost');
 
     Route::get('new-products', 'API\ProductController@getNewProducts');
-
+    Route::get('all-products', 'API\ProductController@getAllProducts');
 });
 
 Route::group(['middleware' => ['jwt.auth']], function(){
