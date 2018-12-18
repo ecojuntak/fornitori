@@ -16,16 +16,17 @@ Route::post('auth/register', 'API\RegistrationController@register');
 Route::get('email/verify/{token}', 'Auth\VerificationController@verifyEmail')->name('email.verify');
 
 Route::group(['middleware' =>  'public-api'], function () {
-    Route::get('/products/search', 'API\ProductController@searchProduct');
+    Route::get('products/search', 'API\ProductController@searchProduct');
+    Route::get('products/{id}', 'API\ProductController@getProduct');
+    Route::get('new-products', 'API\ProductController@getNewProducts');
+    Route::get('all-products', 'API\ProductController@getAllProducts');
+
     Route::get('carousels', 'API\CarouselController@getCarousels');
 
     Route::get('provinces', 'API\RegionalController@getProvinces');
     Route::get('cities', 'API\RegionalController@getCities');
     Route::get('subdistricts', 'API\RegionalController@getSubdistricts');
     Route::post('shipping-cost', 'API\RajaOngkirController@getShippingCost');
-
-    Route::get('new-products', 'API\ProductController@getNewProducts');
-    Route::get('all-products', 'API\ProductController@getAllProducts');
 });
 
 Route::group(['middleware' => ['jwt.auth']], function(){
@@ -70,7 +71,6 @@ Route::group(['middleware' => ['jwt.auth']], function(){
         Route::post('profiles/update-password', 'API\ProfileController@updatePassword');
     });
 
-    Route::get('products/{id}', 'API\ProductController@getProduct');
     Route::get('user', 'API\UserController@user');
 });
 

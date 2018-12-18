@@ -26,7 +26,12 @@ class ProductController extends Controller
     }
 
     public function getProduct($id) {
-        return response()->json(Product::find($id));
+        $product = Product::with('merchant')->find($id);
+        $product = $this->decodeSerializedData($product);
+
+        return response()->json([
+            'product' => $product
+        ], Config::get('messages.SUCCESS_CODE'));
     }
 
     public function getProductsByMerchant() {
@@ -98,7 +103,7 @@ class ProductController extends Controller
 
     public function getNewProducts() {
         $products = Product::with('merchant')->inRandomOrder()->limit(15)->get();
-        $products = $this->decodeImages($products);
+        $products = $this->decodeSerializedData($products);
 
         return response()->json([
             'products' => $products
@@ -107,16 +112,22 @@ class ProductController extends Controller
 
     public function getAllProducts() {
         $products = Product::with('merchant')->inRandomOrder()->get();
-        $products = $this->decodeImages($products);
+        $products = $this->decodeSerializedData($products);
 
         return response()->json([
             'products' => $products
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
-    private function decodeImages($products) {
-        foreach ($products as $product) {
-            $product->images = json_decode($product->images);
+    private function decodeSerializedData($products) {
+        if(is_iterable($products)) {
+            foreach ($products as $product) {
+                $product->images = json_decode($product->images);
+                $product->specification = json_decode($product->specification);
+            }
+        } else {
+            $products->images = json_decode($products->images);
+            $products->specification = json_decode($products->specification);
         }
 
         return $products;

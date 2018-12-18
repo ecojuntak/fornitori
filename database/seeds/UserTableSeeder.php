@@ -67,8 +67,9 @@ class UserTableSeeder extends Seeder
                 'stock' => '5',
                 'description' => 'Ulosnya bagus',
                 'category' => 'ATBM',
-                'specification' => '{"dimention":"2m x 90cm","weight":"1"}',
-                'images' => '["no-image.png"]',
+                'condition' => 'Bekas',
+                'specification' => '{"dimension":"2m x 90cm","weight":"1"}',
+                'images' => '["no-image.png", "no-image.png", "no-image.png", "no-image.png", "no-image.png"]',
                 'color' => 'black',
             ]);
         }
@@ -97,8 +98,9 @@ class UserTableSeeder extends Seeder
                 'stock' => '5',
                 'description' => 'Ulosnya bagus',
                 'category' => 'ATBM',
-                'specification' => '{"dimention":"2m x 90cm","weight":"1"}',
-                'images' => '["no-image.png"]',
+                'condition' => 'Baru',
+                'specification' => '{"dimension":"2m x 90cm","weight":"1"}',
+                'images' => '["no-image.png", "no-image.png", "no-image.png", "no-image.png", "no-image.png"]',
                 'color' => 'black',
             ]);
         }

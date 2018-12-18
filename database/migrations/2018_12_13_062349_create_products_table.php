@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('price');
             $table->text('images');
             $table->string('category');
+            $table->string('condition');
             $table->integer('stock')->default(0);
             $table->integer('sold')->default(0);
             $table->string('description');
