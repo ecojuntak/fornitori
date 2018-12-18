@@ -16,7 +16,9 @@ class ProductController extends Controller
     private $user;
 
     public function __construct() {
-        $this->user = JWTAuth::parseToken()->toUser();
+        if(JWTAuth::getToken()) {
+            $this->user = JWTAuth::parseToken()->toUser();
+        }
     }
 
     public function index() {
@@ -92,6 +94,23 @@ class ProductController extends Controller
         return response()->json([
             'status' => Config::get('messages.PRODUCT_DELETED_STATUS')
         ], Config::get('messages.SUCCESS_CODE'));
+    }
+
+    public function getNewProducts() {
+        $products = Product::with('merchant')->inRandomOrder()->limit(15)->get();
+        $products = $this->decodeImages($products);
+
+        return response()->json([
+            'products' => $products
+        ], Config::get('messages.SUCCESS_CODE'));
+    }
+
+    private function decodeImages($products) {
+        foreach ($products as $product) {
+            $product->images = json_decode($product->images);
+        }
+
+        return $products;
     }
 
 }
