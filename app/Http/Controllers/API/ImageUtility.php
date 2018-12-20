@@ -16,8 +16,6 @@ trait ImageUtility {
         }
 
         return $imageNames;
-
-        return $imageNames;
     }
 
     function storeSingleImage($image, $folderName) {

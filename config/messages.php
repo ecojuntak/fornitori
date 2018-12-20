@@ -32,5 +32,7 @@ return [
     "NEW_ORDER_STATUS" => "New order",
     "ORDER_CREATED" => "Order created",
     "CART_EMPTY" => "Cart is empty",
-    "PROOF_OF_PAYMENT_UPLOADED_MESSAGE" => 'Proof of payment uploaded'
+    "PROOF_OF_PAYMENT_UPLOADED_MESSAGE" => 'Proof of payment uploaded',
+
+    "PROFILE_MERCHANT_CREATED" => "Profile Merchant Created"
 ];
