@@ -34,5 +34,6 @@ return [
     "CART_EMPTY" => "Cart is empty",
     "PROOF_OF_PAYMENT_UPLOADED_MESSAGE" => 'Proof of payment uploaded',
 
-    "PROFILE_MERCHANT_CREATED" => "Profile Merchant Created"
+    "PROFILE_USER_CREATED" => "Profile Created",
+    "PROFILE_USER_UPDATED" => "Profile Updated"
 ];
