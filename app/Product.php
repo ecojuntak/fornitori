@@ -28,5 +28,12 @@ class Product extends Model
 
     protected $fillable = ['name', 'price', 'stock', 'description', 'category', 'specification', 'images', 'color'];
     protected $dates = ['deleted_at'];
+
+    public function decodeSerializedData() {
+        $this->images = json_decode($this->images);
+        $this->specification = json_decode($this->specification);
+
+        return $this;
+    }
 }
 	

@@ -122,12 +122,10 @@ class ProductController extends Controller
     private function decodeSerializedData($products) {
         if(is_iterable($products)) {
             foreach ($products as $product) {
-                $product->images = json_decode($product->images);
-                $product->specification = json_decode($product->specification);
+                $product->decodeSerializedData();
             }
         } else {
-            $products->images = json_decode($products->images);
-            $products->specification = json_decode($products->specification);
+            $products->decodeSerializedData();
         }
 
         return $products;

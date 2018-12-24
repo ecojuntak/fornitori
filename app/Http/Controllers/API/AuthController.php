@@ -24,7 +24,6 @@ class AuthController extends Controller {
         $user = User::where('email', $request->email)
                     ->first();
 
-      
         return response([
             'status' => Config::get('messages.SUCCESS_STATUS'),
             'message' => Config::get('messages.LOGIN_SUCCESS_MESSAGE'),
