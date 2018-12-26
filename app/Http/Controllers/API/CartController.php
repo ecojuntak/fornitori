@@ -17,8 +17,11 @@ class CartController extends Controller
     }
 
     public function getProductInCart() {
+        $cart = Cart::with('details.product')->where('user_id', $this->user->id)->orderByDesc('created_at')->first();
+        $cart->details = $this->decodeSerializedData($cart->details);
+
         return response()->json([
-            "cart" => Cart::with('products')->where('user_id', $this->user->id)->orderByDesc('created_at')->first(),
+            "cart" => $cart,
             "user" => $this->user
         ], Config::get('messages.SUCCESS_CODE'));
     }
@@ -41,5 +44,15 @@ class CartController extends Controller
         return response()->json([
             'status' => $status
         ], Config::get('messages.SUCCESS_CODE'));
+    }
+
+    private function decodeSerializedData($details) {
+        if(is_iterable($details)) {
+            foreach ($details as $detail) {
+                $detail->product->decodeSerializedData();
+            }
+        }
+
+        return $details;
     }
 }

@@ -15,27 +15,17 @@ class Cors
      */
     public function handle($request, Closure $next)
     {
-        if($this->isInWhiteList($request->ip())) {
-            $response = $next($request);
-            $response->headers->set('Access-Control-Allow-Origin', '*');
-            $response->headers->set('Access-Control-Allow-Headers', 'Authorization, App-Token');
-            $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTION');
+        $appToken = $request->header('AppToken');
 
-            return $response;
-        } else {
-            return $next($request);
-        }
-    }
+//        if($appToken !== env('APP_TOKEN')) {
+//            abort(401, 'Access denied', ['App-Token' => $appToken]);
+//        }
 
-    private function isInWhiteList($clientIp) {
-        $whiteListIps = explode(",", env("WHITELIST_IP"));
+        $response = $next($request);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Headers', 'Authorization, App-Token, Content-Type');
+        $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTION');
 
-        foreach ($whiteListIps as $ip) {
-            if($ip ===  $clientIp) {
-                return true;
-            }
-        }
-
-        return false;
+        return $response;
     }
 }
