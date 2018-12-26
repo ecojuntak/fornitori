@@ -25,7 +25,7 @@ class CarouselController extends Controller
         $carousel = new Carousel();
         $carousel->link = $request->link;
         $carousel->description = $request->description;
-        $carousel->image = json_encode($imageName);
+        $carousel->image = $imageName;
         $carousel->status = 'nonactive';
         $carousel->save();
 
@@ -41,7 +41,7 @@ class CarouselController extends Controller
             $this->storeSingleImage($request->file('photo'), 'carousel') : '';
         $carousel->link = $request->link;
         $carousel->description = $request->description;
-        $carousel->image = json_encode($imageName);
+        $carousel->image = $imageName;
         $carousel->save();
 
         return response()->json([

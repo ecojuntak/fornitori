@@ -42,7 +42,7 @@ class ProfileController extends Controller
         $profile = new Profile();
         $profile->name = $request->name;
         $profile->phone = $request->phone;
-        $profile->photo = $request->imageName;
+        $profile->photo = $imageName;
         $profile->address = json_encode($address);
         $profile->gender = $request->gender;
         $profile->birthday = $request->birthday;
@@ -73,7 +73,7 @@ class ProfileController extends Controller
             $this->storeSingleImage($request->file('photo'), 'profile') : '';
         $profile['name'] = $request->name;  
         $profile['phone'] = $request->phone;
-        $profile['photo'] = json_encode($imageName);  
+        $profile['photo'] = $imageName;  
         $profile['address'] = json_encode($address);
         $profile['gender'] = $request->gender;  
         $profile['birthday'] = $request->birthday;
@@ -90,10 +90,9 @@ class ProfileController extends Controller
             $this->storeSingleImage($request->file('photo'), 'profile') : '';
         $profile['name'] = $request->name;  
         $profile['phone'] = $request->phone;
-        $profile['photo'] = json_encode($imageName);
+        $profile['photo'] = $imageName;
     
         $this->user->profile()->update($profile);
-        JWTAuth::invalidate();
     
         return response()->json([
             'status' => Config::get('messages.PROFILE_UPDATED_ADMIN')
