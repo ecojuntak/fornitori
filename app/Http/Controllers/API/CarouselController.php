@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Carousel;
 use Illuminate\Support\Facades\Config;
+use App\Http\Controllers\ImageUtility;
 
 class CarouselController extends Controller
 {
+    use ImageUtility;
+
     public function getCarousels() {
         return response()->json([
             "carousels" => Carousel::all()
@@ -17,12 +20,12 @@ class CarouselController extends Controller
 
     public function storeCarousel(Request $request)
     {
-        $imageNames = $request->file('images') !== null ?
-            $this->storeImages($request->file('images')) : [];
+        $imageName = $request->file('photo') !== null ?
+            $this->storeSingleImage($request->file('photo'), 'carousel') : '';
         $carousel = new Carousel();
         $carousel->link = $request->link;
         $carousel->description = $request->description;
-        $carousel->image = json_encode($imageNames);
+        $carousel->image = $imageName;
         $carousel->status = 'nonactive';
         $carousel->save();
 
@@ -34,11 +37,11 @@ class CarouselController extends Controller
     public function updateCarousel(Request $request, $id)
     {
         $carousel = Carousel::find($id);
-        $imageNames = $request->file('images') !== null ?
-            $this->storeImages($request->file('images')) : [];
+        $imageName = $request->file('photo') !== null ?
+            $this->storeSingleImage($request->file('photo'), 'carousel') : '';
         $carousel->link = $request->link;
         $carousel->description = $request->description;
-        $carousel->image = json_encode($imageNames);
+        $carousel->image = $imageName;
         $carousel->save();
 
         return response()->json([

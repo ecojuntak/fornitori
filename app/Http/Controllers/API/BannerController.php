@@ -28,13 +28,13 @@ class BannerController extends Controller
     public function storeBanner(Request $request) {
         $banner->validate($request);
 
-        $imageNames = $request->file('image') !== null ?
-            $this->storeImages($request->file('image')) : [];
+        $imageName = $request->file('photo') !== null ?
+            $this->storeSingleImage($request->file('photo'), 'banner') : '';
         $banner = new Banner();
         $banner->title = $request->title;
         $banner->description = $request->description;
         $banner->link = $request->link;       
-        $banner->image = json_encode($imageNames);
+        $banner->image = $imageName;
         $banner->status = Config::get('messages.STATUS_BANNER_NONACTIVATED');
         $banner->save();
 
@@ -46,12 +46,12 @@ class BannerController extends Controller
     public function updateBanner(Request $request, $id) {
         $banner->validate($request);
         $banner = Banner::find($id);
-        $imageNames = $request->file('images') !== null ?
-            $this->storeImages($request->file('images')) : [];
+        $imageName = $request->file('photo') !== null ?
+            $this->storeSingleImage($request->file('photo'), 'banner') : '';
         $banner->title = $request->title;
         $banner->description = $request->description;
         $banner->link = $request->link;      
-        $banner->image = json_encode($imageNames); 
+        $banner->image = $imageName; 
 
         $banner->save();
 
