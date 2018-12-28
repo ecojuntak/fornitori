@@ -33,6 +33,8 @@ Route::group(['middleware' => ['jwt.auth']], function(){
 
     Route::group(['middleware' => 'admin-guard', 'prefix' => 'admin'], function () {
         Route::get('orders/status/{status}', 'API\OrderController@getOrdersByStatus');
+        Route::post('orders/{id}/accept-order', 'API\OrderController@acceptedOrderByAdmin');
+        Route::post('orders/{id}/reject-order', 'API\OrderController@rejectedOrderByAdmin');
 
         Route::get('banners', 'API\BannerController@getBanners');
         Route::post('banners/create', 'API\BannerController@storeBanner');

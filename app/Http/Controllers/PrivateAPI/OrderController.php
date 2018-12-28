@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\PrivateAPI;
 
 use App\CartDetail;
 use App\Events\OrderCreatedEvent;
