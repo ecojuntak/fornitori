@@ -12,12 +12,6 @@ class CarouselController extends Controller
 {
     use ImageUtility;
 
-    public function getCarousels() {
-        return response()->json([
-            "carousels" => Carousel::all()
-        ], Config::get('messages.SUCCESS_CODE'));
-    }
-
     public function storeCarousel(Request $request)
     {
         $imageName = $request->file('photo') !== null ?
