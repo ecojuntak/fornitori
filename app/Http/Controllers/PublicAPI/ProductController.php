@@ -32,14 +32,6 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
-    public function deleteProduct($id) {
-        Product::find($id)->delete();
-
-        return response()->json([
-            'status' => Config::get('messages.PRODUCT_DELETED_STATUS')
-        ], Config::get('messages.SUCCESS_CODE'));
-    }
-
     public function getNewProducts() {
         $products = Product::with('merchant')->inRandomOrder()->limit(15)->get();
         $products = $this->decodeSerializedData($products);
