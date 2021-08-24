@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\PublicAPI;
 
 use App\Cart;
 use Illuminate\Http\Request;

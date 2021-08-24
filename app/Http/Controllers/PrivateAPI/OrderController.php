@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\PrivateAPI;
 
 use App\CartDetail;
 use App\Events\OrderCreatedEvent;
@@ -112,6 +112,30 @@ class OrderController extends Controller
 
         return response()->json([
             'orders' => $orders
+        ], Config::get('messages.SUCCESS_CODE'));
+    }
+
+
+    public function acceptedOrderByAdmin(Request $request, $id){
+        $order = Order::where('id', $id)->first();
+        if($order) {
+            $order->status = 'AcceptedByAdmin';
+            $order->cancellation_reason = '';
+            $order->update();
+        }
+        return response()->json([
+            'order' => $order
+        ], Config::get('messages.SUCCESS_CODE'));
+    }
+
+    public function rejectedOrderByAdmin(Request $request, $id){
+        $order = Order::find($id);
+        $order->status = 'RejectedByAdmin';
+        $order->cancellation_reason = $request->cancellation_reason;
+        $order->update();
+
+        return response()->json([
+            'order' => $order
         ], Config::get('messages.SUCCESS_CODE'));
     }
 

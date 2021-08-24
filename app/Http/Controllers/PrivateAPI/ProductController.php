@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\PrivateAPI;
 
 use App\Product;
 use Illuminate\Http\Request;
@@ -23,15 +23,6 @@ class ProductController extends Controller
 
     public function index() {
         return response()->json(Product::all()->orderByDesc('created_at'));
-    }
-
-    public function getProduct($id) {
-        $product = Product::with('merchant', 'reviews.reviewer')->find($id);
-        $product = $this->decodeSerializedData($product);
-
-        return response()->json([
-            'product' => $product
-        ], Config::get('messages.SUCCESS_CODE'));
     }
 
     public function getProductsByMerchant() {
@@ -84,15 +75,6 @@ class ProductController extends Controller
         ], Config::get('messages.SUCCESS_CODE'));
     }
 
-    public function searchProduct(Request $request) {
-        $products = Product::with('merchant.profile')
-                           ->where('name', 'LIKE', '%'. $request->keyword .'%')
-                           ->orderByDesc('created_at')
-                           ->get();
-
-        return response()->json($products);
-    }
-
     public function deleteProduct($id) {
         Product::find($id)->delete();
 
@@ -100,35 +82,4 @@ class ProductController extends Controller
             'status' => Config::get('messages.PRODUCT_DELETED_STATUS')
         ], Config::get('messages.SUCCESS_CODE'));
     }
-
-    public function getNewProducts() {
-        $products = Product::with('merchant')->inRandomOrder()->limit(15)->get();
-        $products = $this->decodeSerializedData($products);
-
-        return response()->json([
-            'products' => $products
-        ], Config::get('messages.SUCCESS_CODE'));
-    }
-
-    public function getAllProducts() {
-        $products = Product::with('merchant')->inRandomOrder()->get();
-        $products = $this->decodeSerializedData($products);
-
-        return response()->json([
-            'products' => $products
-        ], Config::get('messages.SUCCESS_CODE'));
-    }
-
-    private function decodeSerializedData($products) {
-        if(is_iterable($products)) {
-            foreach ($products as $product) {
-                $product->decodeSerializedData();
-            }
-        } else {
-            $products->decodeSerializedData();
-        }
-
-        return $products;
-    }
-
 }
